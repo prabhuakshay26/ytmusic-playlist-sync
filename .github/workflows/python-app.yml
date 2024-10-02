@@ -1,6 +1,7 @@
 name: Sync YTMusic Playlists
 
 on:
+  workflow_dispatch:
   schedule:
     # Run every hour
     - cron: "0 * * * *"
