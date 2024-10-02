@@ -1,0 +1,33 @@
+name: Sync YTMusic Playlists
+
+on:
+  schedule:
+    # Run every hour
+    - cron: "0 * * * *"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ytmusicapi
+
+      - name: Set up oauth.json
+        env:
+          YT_OAUTH_JSON: ${{ secrets.YT_OAUTH_JSON }}
+        run: |
+          echo "$YT_OAUTH_JSON" > oauth.json
+
+      - name: Run sync script
+        run: python sync_ytmusic.py
